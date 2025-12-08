@@ -1,0 +1,17 @@
+{
+  "name": "backrai",
+  "version": "1.1.0",
+  "description": "backrAI Leverage Engine - Complete MVP",
+  "scripts": {
+    "test:connection": "node scripts/test-connection.js",
+    "setup:db": "./scripts/setup-database.sh",
+    "codes:list": "node scripts/update-codes.js list",
+    "codes:update": "node scripts/update-codes.js",
+    "codes:validate": "node scripts/validate-code.js"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "@supabase/supabase-js": "^2.39.0",
+    "puppeteer": "^21.5.0"
+  }
+}
