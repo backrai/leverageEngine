@@ -93,7 +93,7 @@ def test_playwright():
 def test_scraper_import():
     """Test scraper module import"""
     print("\n🔍 Testing scraper module...")
-    
+
     try:
         from scraper import CouponScraper
         print("✅ Scraper module imported successfully")
@@ -105,16 +105,98 @@ def test_scraper_import():
         print(f"⚠️  Import warning: {e}")
         return True  # Might still work
 
+
+def test_code_extractor():
+    """Test code_extractor module"""
+    print("\n🔍 Testing code_extractor module...")
+    try:
+        from code_extractor import (
+            extract_codes_from_text,
+            extract_codes_with_context,
+            extract_brand_indicators,
+            match_code_to_brand,
+        )
+        # Quick sanity check
+        codes = extract_codes_from_text("Use code ALEX15 for 15% off")
+        assert "ALEX15" in codes, f"Expected ALEX15 in codes, got {codes}"
+        print("✅ code_extractor module works correctly")
+        return True
+    except Exception as e:
+        print(f"❌ code_extractor test failed: {e}")
+        return False
+
+
+def test_transcript_service():
+    """Test transcript_service module import"""
+    print("\n🔍 Testing transcript_service module...")
+    try:
+        from transcript_service import TranscriptService
+        # Check that static methods exist
+        assert hasattr(TranscriptService, 'get_transcript')
+        assert hasattr(TranscriptService, 'get_video_metadata')
+        assert hasattr(TranscriptService, 'search_videos')
+        assert hasattr(TranscriptService, 'extract_video_id')
+        # Quick check: extract_video_id
+        vid = TranscriptService.extract_video_id(
+            "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        )
+        assert vid == "dQw4w9WgXcQ", f"Expected dQw4w9WgXcQ, got {vid}"
+        print("✅ transcript_service module works correctly")
+        return True
+    except Exception as e:
+        print(f"❌ transcript_service test failed: {e}")
+        return False
+
+
+def test_sponsorblock_service():
+    """Test sponsorblock_service module import"""
+    print("\n🔍 Testing sponsorblock_service module...")
+    try:
+        from sponsorblock_service import SponsorBlockService
+        svc = SponsorBlockService()
+        assert hasattr(svc, 'has_sponsor_segments')
+        assert hasattr(svc, 'get_sponsor_segments')
+        assert hasattr(svc, 'batch_check_videos')
+        print("✅ sponsorblock_service module imported successfully")
+        return True
+    except Exception as e:
+        print(f"❌ sponsorblock_service test failed: {e}")
+        return False
+
+
+def test_creator_discovery():
+    """Test creator_discovery module import"""
+    print("\n🔍 Testing creator_discovery module...")
+    try:
+        from creator_discovery import (
+            CreatorDiscovery,
+            SEED_CREATORS,
+            CREATOR_SEARCH_QUERIES,
+            run_creator_discovery,
+        )
+        assert len(SEED_CREATORS) > 0, "SEED_CREATORS should not be empty"
+        assert len(CREATOR_SEARCH_QUERIES) > 0, "CREATOR_SEARCH_QUERIES should not be empty"
+        print(f"✅ creator_discovery module imported ({len(SEED_CREATORS)} seed creators, {len(CREATOR_SEARCH_QUERIES)} queries)")
+        return True
+    except Exception as e:
+        print(f"❌ creator_discovery test failed: {e}")
+        return False
+
+
 def main():
     print("=" * 60)
     print("🧪 backrAI Scraper Test Suite")
     print("=" * 60)
-    
+
     # Required tests (must pass for CI to succeed)
     required_results = {
         "Connection": False,
         "Playwright": False,
         "Scraper Module": False,
+        "Code Extractor": False,
+        "Transcript Service": False,
+        "SponsorBlock Service": False,
+        "Creator Discovery": False,
     }
 
     # Optional tests (external service dependencies — warn but don't fail CI)
@@ -135,6 +217,18 @@ def main():
 
     # Test 4: Scraper Module
     required_results["Scraper Module"] = test_scraper_import()
+
+    # Test 5: Code Extractor
+    required_results["Code Extractor"] = test_code_extractor()
+
+    # Test 6: Transcript Service
+    required_results["Transcript Service"] = test_transcript_service()
+
+    # Test 7: SponsorBlock Service
+    required_results["SponsorBlock Service"] = test_sponsorblock_service()
+
+    # Test 8: Creator Discovery
+    required_results["Creator Discovery"] = test_creator_discovery()
 
     # Summary
     print("\n" + "=" * 60)

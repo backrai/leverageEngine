@@ -86,6 +86,9 @@ jobs:
       - name: Install Playwright browsers
         run: playwright install chromium --with-deps
 
+      - name: Run code extractor unit tests
+        run: python test_code_extractor.py
+
       - name: Run scraper tests
         run: python test_scraper.py
         env:

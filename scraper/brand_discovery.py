@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
 """
-backrAI Brand Discovery Module
-Discovers new e-commerce brands from coupon aggregator sites and YouTube,
-inserts them into the database, then triggers the scraper for each new brand.
+backrAI Brand Discovery Module (LEGACY — use creator_discovery.py instead)
+==========================================================================
+This module discovers brands from coupon aggregator sites (RetailMeNot,
+Coupons.com) and YouTube search. It's kept for backward compatibility but
+the creator-centric approach in creator_discovery.py is preferred.
+
+DEPRECATED: Codes from coupon sites credit the coupon site, not creators.
+Use `creator_discovery.py` for creator-attributed codes.
+
+New usage:
+  python scraper.py discover-creators            # Creator-centric discovery
+  python scraper.py discover-creators --search-only
+  python scraper.py scrape-creator <channel_url>
 """
 
 import asyncio

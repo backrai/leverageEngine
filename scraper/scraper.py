@@ -465,29 +465,92 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) > 1:
-        if sys.argv[1] == "validate":
+        command = sys.argv[1]
+
+        if command == "validate":
             asyncio.run(validate_existing_offers())
-        elif sys.argv[1] == "--brand-id" and len(sys.argv) > 2:
+
+        elif command == "--brand-id" and len(sys.argv) > 2:
             # Scrape specific brand by ID
             brand_id = sys.argv[2]
             asyncio.run(scrape_brand_by_id(brand_id))
-        elif sys.argv[1] == "discover":
-            # Run brand discovery only
+
+        elif command == "discover":
+            # Run brand discovery only (legacy)
             from brand_discovery import run_discovery
             asyncio.run(run_discovery(discovery_only=True))
-        elif sys.argv[1] == "full-pipeline":
-            # Run discovery then scrape all brands
+
+        elif command == "full-pipeline":
+            # Run brand discovery then scrape all brands (legacy)
             from brand_discovery import run_discovery
             asyncio.run(run_discovery())
             print("\n🔄 Now scraping all brands (including newly discovered)...")
             asyncio.run(scrape_all_brands())
+
+        # ----- Creator-centric commands (NEW) -----
+        elif command == "discover-creators":
+            from creator_discovery import run_creator_discovery
+            # Parse optional flags
+            strategies = "search,channel"
+            max_results = 10
+            max_videos = 10
+            i = 2
+            while i < len(sys.argv):
+                if sys.argv[i] == "--strategies" and i + 1 < len(sys.argv):
+                    strategies = sys.argv[i + 1]
+                    i += 2
+                elif sys.argv[i] == "--max-results" and i + 1 < len(sys.argv):
+                    max_results = int(sys.argv[i + 1])
+                    i += 2
+                elif sys.argv[i] == "--max-videos" and i + 1 < len(sys.argv):
+                    max_videos = int(sys.argv[i + 1])
+                    i += 2
+                elif sys.argv[i] == "--search-only":
+                    strategies = "search"
+                    i += 1
+                elif sys.argv[i] == "--seed-only":
+                    strategies = "channel"
+                    i += 1
+                else:
+                    i += 1
+
+            strategy_list = [s.strip() for s in strategies.split(",")]
+            run_creator_discovery(
+                strategies=strategy_list,
+                max_results=max_results,
+                max_videos_per_creator=max_videos,
+            )
+
+        elif command == "scrape-creator":
+            if len(sys.argv) < 3:
+                print("Usage: python scraper.py scrape-creator <channel_url>")
+                sys.exit(1)
+            channel_url = sys.argv[2]
+            max_videos = int(sys.argv[3]) if len(sys.argv) > 3 else 20
+            from creator_discovery import CreatorDiscovery
+            engine = CreatorDiscovery()
+            discoveries = engine.discover_from_channel(
+                channel_url=channel_url,
+                max_videos=max_videos,
+            )
+            if discoveries:
+                engine.save_discoveries(discoveries)
+            engine.print_stats()
+
         else:
             print("Usage:")
-            print("  python scraper.py                    # Scrape all brands")
-            print("  python scraper.py validate           # Validate existing offers")
-            print("  python scraper.py --brand-id <id>    # Scrape specific brand")
-            print("  python scraper.py discover           # Discover new brands only")
-            print("  python scraper.py full-pipeline      # Discover brands + scrape all")
+            print("  python scraper.py                              # Scrape all brands")
+            print("  python scraper.py validate                     # Validate existing offers")
+            print("  python scraper.py --brand-id <id>              # Scrape specific brand")
+            print("  python scraper.py discover                     # Discover new brands (legacy)")
+            print("  python scraper.py full-pipeline                # Discover brands + scrape all")
+            print()
+            print("  Creator-centric (recommended):")
+            print("  python scraper.py discover-creators            # Discover creators + codes")
+            print("  python scraper.py discover-creators --search-only")
+            print("  python scraper.py discover-creators --seed-only")
+            print("  python scraper.py discover-creators --strategies search,channel --max-results 15")
+            print("  python scraper.py scrape-creator <channel_url> # Scrape a specific channel")
     else:
         asyncio.run(scrape_all_brands())
 

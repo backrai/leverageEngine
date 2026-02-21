@@ -6,25 +6,49 @@ on:
     - cron: "0 2 * * *"
   workflow_dispatch:
     inputs:
+      mode:
+        description: "Discovery mode: creator-discovery (recommended) or brand-discovery (legacy)"
+        required: false
+        type: choice
+        options:
+          - creator-discovery
+          - brand-discovery
+          - both
+        default: creator-discovery
+      strategies:
+        description: "Creator discovery strategies (comma-separated): search, channel, sponsorblock"
+        required: false
+        type: string
+        default: "search,channel"
+      max_results:
+        description: "Max results per search query"
+        required: false
+        type: string
+        default: "10"
+      max_videos:
+        description: "Max videos per creator channel"
+        required: false
+        type: string
+        default: "10"
       skip_youtube:
-        description: "Skip YouTube discovery (faster, coupon sites + curated list only)"
+        description: "[Legacy] Skip YouTube discovery (brand-discovery mode only)"
         required: false
         type: boolean
         default: false
       categories:
-        description: "Comma-separated categories (e.g., fitness,beauty,tech). Leave empty for all."
+        description: "[Legacy] Brand categories (brand-discovery mode only)"
         required: false
         type: string
         default: ""
       discovery_only:
-        description: "Only discover brands, skip code scraping"
+        description: "Only discover, skip full scraping"
         required: false
         type: boolean
         default: false
 
 jobs:
   scrape:
-    name: Discover brands & scrape codes
+    name: Discover creators & scrape codes
     runs-on: ubuntu-latest
     timeout-minutes: 60
     defaults:
@@ -51,7 +75,19 @@ jobs:
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" > .env
           echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env
 
-      - name: Run brand discovery
+      # Creator-centric discovery (primary — recommended)
+      - name: Run creator discovery
+        if: ${{ inputs.mode == 'creator-discovery' || inputs.mode == 'both' || inputs.mode == '' }}
+        run: |
+          python scraper.py discover-creators \
+            --strategies "${{ inputs.strategies || 'search,channel' }}" \
+            --max-results "${{ inputs.max_results || '10' }}" \
+            --max-videos "${{ inputs.max_videos || '10' }}" \
+            2>&1 | tee creator-discovery.log
+
+      # Legacy brand discovery (kept for backward compatibility)
+      - name: Run brand discovery (legacy)
+        if: ${{ inputs.mode == 'brand-discovery' || inputs.mode == 'both' }}
         run: |
           ARGS=""
           if [ "${{ inputs.skip_youtube }}" = "true" ]; then
@@ -63,10 +99,10 @@ jobs:
           if [ "${{ inputs.discovery_only }}" = "true" ]; then
             ARGS="$ARGS --discovery-only"
           fi
-          python brand_discovery.py $ARGS 2>&1 | tee discovery.log
+          python brand_discovery.py $ARGS 2>&1 | tee brand-discovery.log
 
       - name: Run full scraper for all brands
-        if: ${{ inputs.discovery_only != true && github.event.inputs.discovery_only != 'true' }}
+        if: ${{ inputs.discovery_only != true && github.event.inputs.discovery_only != 'true' && (inputs.mode == 'brand-discovery' || inputs.mode == 'both') }}
         run: |
           python scraper.py 2>&1 | tee scraper.log
 
@@ -76,6 +112,8 @@ jobs:
         with:
           name: scraper-logs-${{ github.run_id }}
           path: |
+            scraper/creator-discovery.log
+            scraper/brand-discovery.log
             scraper/discovery.log
             scraper/scraper.log
           retention-days: 30

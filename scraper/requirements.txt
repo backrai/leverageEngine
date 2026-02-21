@@ -3,4 +3,6 @@ supabase==2.0.0
 python-dotenv==1.0.0
 requests==2.31.0
 beautifulsoup4==4.12.2
+youtube-transcript-api==0.6.3
+yt-dlp==2024.12.6
 
