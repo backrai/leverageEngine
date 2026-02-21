@@ -325,20 +325,18 @@ async def scrape_brand_by_id(brand_id: str, use_youtube: bool = True):
 
             if len(codes) == 0:
                 print("No codes found for this brand")
-                await scraper.close()
                 return []
 
-                # Get or create a default creator for unassigned codes
+            # Get or create a default creator for unassigned codes
             # First, try to get the first creator in the system
             creators_response = supabase.table("creators").select("id").limit(1).execute()
             default_creator_id = None
-            
+
             if creators_response.data and len(creators_response.data) > 0:
                 default_creator_id = creators_response.data[0]["id"]
                 print(f"Using default creator ID: {default_creator_id}")
             else:
                 print("Warning: No creators found. Codes will be scraped but not assigned.")
-                await scraper.close()
                 return codes
 
             # Create offers for the found codes
@@ -378,8 +376,9 @@ async def scrape_brand_by_id(brand_id: str, use_youtube: bool = True):
                     print(f"Error creating offer for code {code_data['code']}: {e}")
 
             print(f"\n✅ Scraping complete: {created_count} new offers created, {len(codes)} total codes found")
-            await scraper.close()
             return codes
+        finally:
+            await scraper.close()
 
 
 async def scrape_all_brands():

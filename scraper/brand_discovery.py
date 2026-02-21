@@ -107,28 +107,44 @@ class BrandDiscovery:
     """Discovers new e-commerce brands from coupon sites and YouTube"""
 
     def __init__(self):
+        self._playwright = None
         self.browser: Optional[Browser] = None
-        self.page: Optional[Page] = None
         self.existing_domains: Set[str] = set()
         self.discovered_brands: List[Dict[str, str]] = []
 
     async def initialize(self):
         """Initialize browser and load existing brands from DB"""
-        playwright = await async_playwright().start()
-        self.browser = await playwright.chromium.launch(headless=True)
-        self.page = await self.browser.new_page()
-        # Set user agent to avoid detection
-        await self.page.set_extra_http_headers({
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
-        })
+        self._playwright = await async_playwright().start()
+        self.browser = await self._playwright.chromium.launch(headless=True)
 
         # Pre-load existing domain patterns for deduplication
         await self._load_existing_brands()
 
+    async def _ensure_browser(self):
+        """Ensure the browser is connected, relaunch if crashed"""
+        if not self.browser or not self.browser.is_connected():
+            if self.browser:
+                try:
+                    await self.browser.close()
+                except Exception:
+                    pass
+            self.browser = await self._playwright.chromium.launch(headless=True)
+
+    async def _new_page(self) -> Page:
+        """Create a fresh page with custom user agent (relaunches browser if needed)"""
+        await self._ensure_browser()
+        page = await self.browser.new_page()
+        await page.set_extra_http_headers({
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+        })
+        return page
+
     async def close(self):
-        """Close browser"""
+        """Close browser and Playwright"""
         if self.browser:
             await self.browser.close()
+        if self._playwright:
+            await self._playwright.stop()
 
     async def _load_existing_brands(self):
         """Load existing brand domain patterns from the database"""
@@ -180,13 +196,15 @@ class BrandDiscovery:
         ]
 
         for url in urls:
+            page = None
             try:
                 print(f"  🔍 Scanning {url}...")
-                await self.page.goto(url, wait_until="networkidle", timeout=15000)
-                await self.page.wait_for_timeout(2000)
+                page = await self._new_page()
+                await page.goto(url, wait_until="networkidle", timeout=15000)
+                await page.wait_for_timeout(2000)
 
                 # Extract store links — RetailMeNot lists stores as links
-                store_data = await self.page.evaluate("""
+                store_data = await page.evaluate("""
                     () => {
                         const stores = [];
                         // Look for store/merchant links
@@ -223,6 +241,9 @@ class BrandDiscovery:
             except Exception as e:
                 print(f"  ⚠️  Error scraping RetailMeNot {url}: {e}")
                 continue
+            finally:
+                if page:
+                    await page.close()
 
         return brands
 
@@ -238,12 +259,14 @@ class BrandDiscovery:
         ]
 
         for url in urls:
+            page = None
             try:
                 print(f"  🔍 Scanning {url}...")
-                await self.page.goto(url, wait_until="networkidle", timeout=15000)
-                await self.page.wait_for_timeout(2000)
+                page = await self._new_page()
+                await page.goto(url, wait_until="networkidle", timeout=15000)
+                await page.wait_for_timeout(2000)
 
-                store_data = await self.page.evaluate("""
+                store_data = await page.evaluate("""
                     () => {
                         const stores = [];
                         const links = document.querySelectorAll(
@@ -286,6 +309,9 @@ class BrandDiscovery:
             except Exception as e:
                 print(f"  ⚠️  Error scraping Coupons.com {url}: {e}")
                 continue
+            finally:
+                if page:
+                    await page.close()
 
         return brands
 
@@ -308,26 +334,28 @@ class BrandDiscovery:
                 search_queries.extend(DISCOVERY_CATEGORIES[cat])
 
         for query in search_queries:
+            page = None
             try:
                 print(f"  🔍 YouTube search: \"{query}\"...")
                 search_url = (
                     f"https://www.youtube.com/results?search_query="
                     f"{query.replace(' ', '+')}"
                 )
-                await self.page.goto(
+                page = await self._new_page()
+                await page.goto(
                     search_url, wait_until="networkidle", timeout=30000
                 )
-                await self.page.wait_for_timeout(3000)
+                await page.wait_for_timeout(3000)
 
                 # Scroll to load more results
                 for _ in range(2):
-                    await self.page.evaluate(
+                    await page.evaluate(
                         "window.scrollTo(0, document.documentElement.scrollHeight)"
                     )
-                    await self.page.wait_for_timeout(2000)
+                    await page.wait_for_timeout(2000)
 
                 # Extract video titles — brand names are often mentioned
-                titles = await self.page.evaluate("""
+                titles = await page.evaluate("""
                     () => {
                         const titles = [];
                         document.querySelectorAll(
@@ -357,6 +385,9 @@ class BrandDiscovery:
             except Exception as e:
                 print(f"  ⚠️  Error searching YouTube for \"{query}\": {e}")
                 continue
+            finally:
+                if page:
+                    await page.close()
 
         return brands
 
