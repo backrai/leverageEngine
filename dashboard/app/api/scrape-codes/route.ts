@@ -25,18 +25,20 @@ export async function POST(request: NextRequest) {
     const supabase = createServerClient();
 
     // Check if brand exists
-    const { data: brand, error: brandError } = await supabase
+    const { data: brandData, error: brandError } = await supabase
       .from('brands')
       .select('id, name, domain_pattern')
       .eq('id', brandId)
       .single();
 
-    if (brandError || !brand) {
+    if (brandError || !brandData) {
       return NextResponse.json(
         { error: 'Brand not found' },
         { status: 404 }
       );
     }
+
+    const brand = brandData as { id: string; name: string; domain_pattern: string };
 
     // Check if offers already exist for this brand
     const { data: existingOffers, error: offersError } = await supabase
@@ -65,7 +67,6 @@ export async function POST(request: NextRequest) {
     // Get the scraper directory path (sibling to dashboard)
     const dashboardPath = process.cwd();
     const scraperPath = path.join(dashboardPath, '..', 'scraper');
-    const scraperScript = path.join(scraperPath, 'scraper.py');
 
     console.log('[Scraper API] Scraper path:', scraperPath);
 
@@ -152,7 +153,7 @@ export async function GET(request: NextRequest) {
   const supabase = createServerClient();
 
   // Check if offers exist
-  const { data: offers, error } = await supabase
+  const { data: offersData, error } = await supabase
     .from('offers')
     .select('id, code, discount_amount, is_active')
     .eq('brand_id', brandId);
@@ -164,11 +165,13 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const offers = (offersData ?? []) as Array<{ id: string; code: string; discount_amount: string; is_active: boolean }>;
+
   return NextResponse.json({
     brandId,
-    hasOffers: offers && offers.length > 0,
-    offersCount: offers?.length || 0,
-    activeOffersCount: offers?.filter(o => o.is_active).length || 0
+    hasOffers: offers.length > 0,
+    offersCount: offers.length,
+    activeOffersCount: offers.filter(o => o.is_active).length
   });
 }
 

@@ -472,11 +472,23 @@ if __name__ == "__main__":
             # Scrape specific brand by ID
             brand_id = sys.argv[2]
             asyncio.run(scrape_brand_by_id(brand_id))
+        elif sys.argv[1] == "discover":
+            # Run brand discovery only
+            from brand_discovery import run_discovery
+            asyncio.run(run_discovery(discovery_only=True))
+        elif sys.argv[1] == "full-pipeline":
+            # Run discovery then scrape all brands
+            from brand_discovery import run_discovery
+            asyncio.run(run_discovery())
+            print("\n🔄 Now scraping all brands (including newly discovered)...")
+            asyncio.run(scrape_all_brands())
         else:
             print("Usage:")
-            print("  python scraper.py              # Scrape all brands")
-            print("  python scraper.py validate     # Validate existing offers")
-            print("  python scraper.py --brand-id <id>  # Scrape specific brand")
+            print("  python scraper.py                    # Scrape all brands")
+            print("  python scraper.py validate           # Validate existing offers")
+            print("  python scraper.py --brand-id <id>    # Scrape specific brand")
+            print("  python scraper.py discover           # Discover new brands only")
+            print("  python scraper.py full-pipeline      # Discover brands + scrape all")
     else:
         asyncio.run(scrape_all_brands())
 

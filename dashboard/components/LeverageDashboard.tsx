@@ -95,7 +95,7 @@ export function LeverageDashboard({ creatorId }: LeverageDashboardProps) {
               {leverageData.new_brand_discoveries}
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              Brands you're driving sales for without partnerships
+              Brands you&apos;re driving sales for without partnerships
             </p>
           </div>
 

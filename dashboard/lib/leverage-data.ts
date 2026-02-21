@@ -53,9 +53,12 @@ export async function getLeverageData(creatorId: string): Promise<LeverageData> 
     };
   }
 
+  // Cast to any[] for flexible property access on joined query results
+  const eventRows = events as any[];
+
   // Calculate lost attribution count
   // Lost attribution = POST_PURCHASE_VOTE where offer_code_used != offer_code_backed
-  const lostAttribution = events.filter(
+  const lostAttribution = eventRows.filter(
     (e) =>
       e.event_type === 'POST_PURCHASE_VOTE' &&
       e.offer_code_used &&
@@ -66,7 +69,7 @@ export async function getLeverageData(creatorId: string): Promise<LeverageData> 
   // Calculate new brand discoveries
   // Get all brands this creator was backed for
   const backedBrands = new Set(
-    events
+    eventRows
       .filter((e) => e.brand_id)
       .map((e) => e.brand_id!)
   );
@@ -79,7 +82,7 @@ export async function getLeverageData(creatorId: string): Promise<LeverageData> 
     .eq('is_active', true);
 
   const officialBrandIds = new Set(
-    (officialBrands || []).map((o) => o.brand_id)
+    ((officialBrands || []) as any[]).map((o) => o.brand_id)
   );
 
   // New brand discoveries = brands backed but not officially partnered
@@ -94,7 +97,7 @@ export async function getLeverageData(creatorId: string): Promise<LeverageData> 
     .in('id', newBrandIds);
 
   // Calculate estimated revenue
-  const totalValue = events.reduce((sum, e) => {
+  const totalValue = eventRows.reduce((sum: number, e: any) => {
     return sum + (e.transaction_value || 0);
   }, 0);
 
@@ -105,7 +108,7 @@ export async function getLeverageData(creatorId: string): Promise<LeverageData> 
     lost_attribution_count: lostAttribution.length,
     new_brand_discoveries: newBrandIds.length,
     estimated_revenue: totalValue,
-    estimated_share
+    estimated_share: estimatedShare
   };
 }
 
@@ -167,6 +170,8 @@ export async function getNewBrandLeads(
     return [];
   }
 
+  const eventRows = allEvents as any[];
+
   // Get official brand partnerships
   const { data: officialBrands } = await supabase
     .from('offers')
@@ -175,13 +180,13 @@ export async function getNewBrandLeads(
     .eq('is_active', true);
 
   const officialBrandIds = new Set(
-    (officialBrands || []).map((o) => o.brand_id)
+    ((officialBrands || []) as any[]).map((o) => o.brand_id)
   );
 
   // Group by brand and filter out official partnerships
   const brandMap = new Map<string, { count: number; totalValue: number }>();
 
-  allEvents.forEach((e) => {
+  eventRows.forEach((e) => {
     if (e.brand_id && !officialBrandIds.has(e.brand_id)) {
       const existing = brandMap.get(e.brand_id) || { count: 0, totalValue: 0 };
       brandMap.set(e.brand_id, {
@@ -199,7 +204,7 @@ export async function getNewBrandLeads(
     .in('id', brandIds);
 
   const brandNameMap = new Map(
-    (brands || []).map((b) => [b.id, b.name])
+    ((brands || []) as any[]).map((b) => [b.id, b.name])
   );
 
   return Array.from(brandMap.entries()).map(([brandId, stats]) => ({
