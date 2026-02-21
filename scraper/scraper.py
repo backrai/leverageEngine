@@ -344,36 +344,36 @@ async def scrape_brand_by_id(brand_id: str, use_youtube: bool = True):
             # Create offers for the found codes
             created_count = 0
             for code_data in codes:
-            try:
-                # Check if offer already exists
-                existing = (
-                    supabase.table("offers")
-                    .select("id")
-                    .eq("brand_id", brand_id)
-                    .eq("code", code_data["code"])
-                    .execute()
-                )
+                try:
+                    # Check if offer already exists
+                    existing = (
+                        supabase.table("offers")
+                        .select("id")
+                        .eq("brand_id", brand_id)
+                        .eq("code", code_data["code"])
+                        .execute()
+                    )
 
-                if existing.data and len(existing.data) > 0:
-                    # Update existing offer
-                    supabase.table("offers").update({
-                        "discount_amount": code_data["discount"],
-                        "is_active": True,
-                        "updated_at": datetime.utcnow().isoformat(),
-                    }).eq("id", existing.data[0]["id"]).execute()
-                    print(f"Updated existing offer: {code_data['code']}")
-                else:
-                    # Create new offer with default creator
-                    supabase.table("offers").insert({
-                        "creator_id": default_creator_id,
-                        "brand_id": brand_id,
-                        "code": code_data["code"],
-                        "discount_amount": code_data["discount"],
-                        "discount_type": "percentage",
-                        "is_active": True,
-                    }).execute()
-                    created_count += 1
-                    print(f"Created new offer: {code_data['code']} ({code_data['discount']})")
+                    if existing.data and len(existing.data) > 0:
+                        # Update existing offer
+                        supabase.table("offers").update({
+                            "discount_amount": code_data["discount"],
+                            "is_active": True,
+                            "updated_at": datetime.utcnow().isoformat(),
+                        }).eq("id", existing.data[0]["id"]).execute()
+                        print(f"Updated existing offer: {code_data['code']}")
+                    else:
+                        # Create new offer with default creator
+                        supabase.table("offers").insert({
+                            "creator_id": default_creator_id,
+                            "brand_id": brand_id,
+                            "code": code_data["code"],
+                            "discount_amount": code_data["discount"],
+                            "discount_type": "percentage",
+                            "is_active": True,
+                        }).execute()
+                        created_count += 1
+                        print(f"Created new offer: {code_data['code']} ({code_data['discount']})")
                 except Exception as e:
                     print(f"Error creating offer for code {code_data['code']}: {e}")
 
