@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "sign_id": "LSM_AGUA_001",
+    "gloss": "AGUA",
+    "gloss_en": "water",
+    "dialect_region": "NATIONAL",
+    "cruz_aldrete_ref": "Cruz Aldrete 2008, CM#65"
+  },
+  "dominant_hand": {
+    "handshape": {
+      "cm_id": 65,
+      "cruz_aldrete_notation": "1\"°/o-",
+      "alpha_code": null,
+      "finger_states": {
+        "index": "CURVED",
+        "middle": "CLOSED",
+        "ring": "CLOSED",
+        "pinky": "CLOSED"
+      },
+      "thumb_opposition": "OPPOSED",
+      "thumb_flexion": "CLOSED",
+      "selected_fingers": [1],
+      "spread": "NEUTRAL",
+      "interaction": "NONE",
+      "thumb_contact": false
+    },
+    "location": {
+      "body_anchor": "Os",
+      "body_region": "FACE",
+      "contact": "NEAR",
+      "laterality": "MIDLINE",
+      "hand_surface": "FINGERTIPS"
+    },
+    "movement": {
+      "contour": null,
+      "local": "TWIST",
+      "direction": [0, 0, 0],
+      "distance": "SHORT",
+      "dynamics": {
+        "speed": "NORMAL",
+        "tension": "NORMAL",
+        "repeated": true,
+        "contact_quality": "CONTACT"
+      }
+    },
+    "orientation": {
+      "palm_facing": "LEFT",
+      "finger_pointing": "UP"
+    }
+  },
+  "non_dominant_hand": null,
+  "bimanual": {
+    "type": "ONE_HANDED"
+  },
+  "non_manual": {
+    "eyebrows": "NEUTRAL",
+    "mouth": "NEUTRAL",
+    "head": "NONE"
+  },
+  "timing": {
+    "phases": ["PREPARATION", "STROKE", "HOLD", "RETRACTION"],
+    "durations_ms": [150, 350, 100, 200],
+    "total_duration_ms": 800
+  },
+  "segments": [
+    {
+      "type": "D",
+      "handshape": {
+        "cm_id": 65,
+        "finger_states": {"index": "CURVED", "middle": "CLOSED", "ring": "CLOSED", "pinky": "CLOSED"},
+        "thumb_opposition": "OPPOSED",
+        "thumb_flexion": "CLOSED"
+      },
+      "location": {"body_anchor": "Os", "body_region": "FACE", "contact": "NEAR"},
+      "orientation": {"palm_facing": "LEFT", "finger_pointing": "UP"},
+      "duration_ms": 150
+    },
+    {
+      "type": "M",
+      "local": "TWIST",
+      "location": {"body_anchor": "Os", "body_region": "FACE", "contact": "NEAR"},
+      "duration_ms": 350
+    },
+    {
+      "type": "D",
+      "location": {"body_anchor": "Os", "body_region": "FACE", "contact": "NEAR"},
+      "duration_ms": 100
+    }
+  ]
+}

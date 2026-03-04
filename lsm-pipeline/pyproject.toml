@@ -1,0 +1,44 @@
+[project]
+name = "lsm-pipeline"
+version = "0.1.0"
+description = "Phonological-to-Animation Pipeline for Mexican Sign Language (LSM)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "OtherAI"}
+]
+
+dependencies = [
+    "numpy>=1.24",
+    "jsonschema>=4.20",
+]
+
+[project.optional-dependencies]
+perception = [
+    "mediapipe>=0.10",
+    "opencv-python>=4.8",
+]
+ml = [
+    "torch>=2.0",
+    "torchvision>=0.15",
+    "scikit-learn>=1.3",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1",
+]
+all = ["lsm-pipeline[perception,ml,dev]"]
+
+[project.scripts]
+lsm-validate = "src.schema.validate:main"
+lsm-benchmark = "scripts.benchmark_pose:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

@@ -1,0 +1,329 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://otherai.dev/schemas/lsm-pn/v1.0",
+  "title": "LSM-PN v1.0",
+  "description": "LSM Phonological Notation — machine-readable representation of Mexican Sign Language signs. Based on Cruz Aldrete (2008) and the Liddell & Johnson sequential model.",
+  "type": "object",
+  "required": ["meta", "dominant_hand", "timing"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["schema_version", "sign_id", "gloss"],
+      "properties": {
+        "schema_version": { "const": "1.0" },
+        "sign_id": {
+          "type": "string",
+          "pattern": "^LSM_[A-Z0-9_]+$",
+          "description": "Unique identifier, e.g. LSM_CASA_001"
+        },
+        "gloss": {
+          "type": "string",
+          "description": "Spanish gloss of the sign in UPPER_CASE"
+        },
+        "gloss_en": {
+          "type": "string",
+          "description": "Optional English gloss"
+        },
+        "dialect_region": {
+          "type": "string",
+          "enum": ["CDMX", "GDL", "MTY", "PUE", "MER", "TIJ", "NATIONAL", "OTHER"],
+          "description": "Regional variant"
+        },
+        "source_video_ref": {
+          "type": "string",
+          "description": "Reference to source video file or URL"
+        },
+        "cruz_aldrete_ref": {
+          "type": "string",
+          "description": "Cruz Aldrete (2008) citation or page reference"
+        }
+      }
+    },
+
+    "dominant_hand": { "$ref": "#/$defs/HandSpec" },
+
+    "non_dominant_hand": {
+      "oneOf": [
+        { "$ref": "#/$defs/HandSpec" },
+        { "type": "null" }
+      ],
+      "description": "Null for one-handed signs"
+    },
+
+    "bimanual": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["ONE_HANDED", "SYMMETRIC", "ASYMMETRIC", "ALTERNATING"],
+          "description": "Bimanual type from Cruz Aldrete §4.4"
+        },
+        "weak_hand_role": {
+          "type": "string",
+          "enum": ["ACTIVE", "TAB", "MIRROR"],
+          "description": "TAB = weak hand serves as location/tabula"
+        }
+      }
+    },
+
+    "non_manual": { "$ref": "#/$defs/NonManualSpec" },
+
+    "timing": { "$ref": "#/$defs/TimingSpec" },
+
+    "segments": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Segment" },
+      "description": "Sequential segments (M/D) following Liddell & Johnson model"
+    }
+  },
+
+  "$defs": {
+
+    "HandSpec": {
+      "type": "object",
+      "required": ["handshape"],
+      "properties": {
+        "handshape": { "$ref": "#/$defs/HandshapeSpec" },
+        "location": { "$ref": "#/$defs/LocationSpec" },
+        "movement": { "$ref": "#/$defs/MovementSpec" },
+        "orientation": { "$ref": "#/$defs/OrientationSpec" }
+      }
+    },
+
+    "HandshapeSpec": {
+      "type": "object",
+      "required": ["cm_id", "finger_states", "thumb_opposition"],
+      "properties": {
+        "cm_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 101,
+          "description": "Cruz Aldrete CM number (1-101)"
+        },
+        "cruz_aldrete_notation": {
+          "type": "string",
+          "description": "Original notation, e.g. '1234+/a+'"
+        },
+        "alpha_code": {
+          "type": ["string", "null"],
+          "description": "Alphabetic code, e.g. '[A]', '[V]'"
+        },
+        "finger_states": {
+          "type": "object",
+          "required": ["index", "middle", "ring", "pinky"],
+          "properties": {
+            "index":  { "$ref": "#/$defs/FlexionLevel" },
+            "middle": { "$ref": "#/$defs/FlexionLevel" },
+            "ring":   { "$ref": "#/$defs/FlexionLevel" },
+            "pinky":  { "$ref": "#/$defs/FlexionLevel" }
+          }
+        },
+        "thumb_opposition": {
+          "type": "string",
+          "enum": ["OPPOSED", "PARALLEL", "CROSSED"]
+        },
+        "thumb_flexion": { "$ref": "#/$defs/FlexionLevel" },
+        "selected_fingers": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1, "maximum": 4 },
+          "description": "Active fingers: 1=index, 2=middle, 3=ring, 4=pinky"
+        },
+        "spread": {
+          "type": "string",
+          "enum": ["CLOSED", "NEUTRAL", "SPREAD"],
+          "default": "NEUTRAL"
+        },
+        "interaction": {
+          "type": "string",
+          "enum": ["NONE", "SPREAD", "STACKED", "CROSSED"],
+          "default": "NONE"
+        },
+        "thumb_contact": { "type": "boolean", "default": false },
+        "non_selected_above": { "type": "boolean", "default": false }
+      }
+    },
+
+    "LocationSpec": {
+      "type": "object",
+      "required": ["body_anchor"],
+      "properties": {
+        "body_anchor": {
+          "type": "string",
+          "description": "Location code from Cruz Aldrete's 76 tábulas, e.g. 'Fr', 'Pe', 'Me'"
+        },
+        "body_region": {
+          "type": "string",
+          "enum": ["HEAD", "FACE", "NECK", "TRUNK", "ARM", "FOREARM", "HAND", "NEUTRAL_SPACE"]
+        },
+        "offset": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 3, "maxItems": 3,
+          "description": "[x, y, z] displacement from anchor in meters"
+        },
+        "contact": {
+          "type": "string",
+          "enum": ["TOUCHING", "GRASPED", "NEAR", "MEDIAL", "DISTANT", "BRUSHING"]
+        },
+        "laterality": {
+          "type": "string",
+          "enum": ["IPSILATERAL", "CONTRALATERAL", "MIDLINE"]
+        },
+        "hand_surface": {
+          "type": "string",
+          "description": "Part of hand oriented toward location (SM parameter)",
+          "enum": ["PALM", "BACK", "RADIAL", "ULNAR", "FINGERTIPS", "THUMB_TIP", "KNUCKLES", "BASE", "NAIL"]
+        },
+        "space_vector": {
+          "type": "string",
+          "enum": ["V0", "V1", "V2", "V3"],
+          "description": "Sagittal vector for signing-space locations"
+        },
+        "space_distance": {
+          "type": "string",
+          "enum": ["PROXIMAL", "MEDIAL", "DISTAL"],
+          "description": "Frontal distance for signing-space locations"
+        }
+      }
+    },
+
+    "MovementSpec": {
+      "type": "object",
+      "properties": {
+        "contour": {
+          "type": ["string", "null"],
+          "enum": ["STRAIGHT", "ARC", "CIRCLE", "ZIGZAG", "SEVEN", null],
+          "description": "Path movement type (Cruz Aldrete: lin, arc, circ, zig, 7)"
+        },
+        "local": {
+          "type": ["string", "null"],
+          "enum": ["WIGGLE", "CIRCULAR", "TWIST", "SCRATCH", "NOD", "OSCILLATE", "RELEASE", "FLATTEN", "PROGRESSIVE", "VIBRATE", "RUB", null],
+          "description": "In-place movement (Cruz Aldrete: ond, cir, rot, rsc, cab, osc, solt, apl, prog, vib, frot)"
+        },
+        "direction": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 3, "maxItems": 3,
+          "description": "Normalized [x, y, z] movement direction"
+        },
+        "distance": {
+          "type": "string",
+          "enum": ["SHORT", "MEDIUM", "LONG"]
+        },
+        "plane": {
+          "type": "string",
+          "enum": ["HORIZONTAL", "VERTICAL", "SAGITTAL", "OBLIQUE"],
+          "description": "Spatial plane of contour movement"
+        },
+        "dynamics": {
+          "type": "object",
+          "properties": {
+            "speed": { "type": "string", "enum": ["SLOW", "NORMAL", "FAST"] },
+            "tension": { "type": "string", "enum": ["RELAXED", "NORMAL", "TENSE"] },
+            "repeated": { "type": "boolean", "default": false },
+            "alternating": { "type": "boolean", "default": false },
+            "contact_quality": {
+              "type": "string",
+              "enum": ["NONE", "CONTACT", "BRUSHING", "IMPACT"]
+            }
+          }
+        }
+      }
+    },
+
+    "OrientationSpec": {
+      "type": "object",
+      "properties": {
+        "palm_facing": {
+          "type": "string",
+          "enum": ["UP", "DOWN", "FORWARD", "BACK", "LEFT", "RIGHT", "NEUTRAL"],
+          "description": "Cruz Aldrete OR component"
+        },
+        "finger_pointing": {
+          "type": "string",
+          "enum": ["UP", "DOWN", "FORWARD", "BACK", "LEFT", "RIGHT", "NEUTRAL"],
+          "description": "Cruz Aldrete DI component"
+        }
+      }
+    },
+
+    "NonManualSpec": {
+      "type": "object",
+      "properties": {
+        "eyebrows": {
+          "type": "string",
+          "enum": ["NEUTRAL", "RAISED", "FURROWED"]
+        },
+        "mouth": {
+          "type": "string",
+          "enum": ["NEUTRAL", "OPEN", "CLOSED", "ROUNDED", "STRETCHED"]
+        },
+        "head": {
+          "type": "string",
+          "enum": ["NONE", "NOD", "SHAKE", "TILT_LEFT", "TILT_RIGHT", "TILT_BACK", "TILT_DOWN"]
+        },
+        "eye_gaze": {
+          "type": "string",
+          "description": "Direction of eye gaze if relevant"
+        },
+        "body_lean": {
+          "type": "string",
+          "enum": ["NONE", "FORWARD", "BACK", "LEFT", "RIGHT"]
+        }
+      }
+    },
+
+    "TimingSpec": {
+      "type": "object",
+      "required": ["phases"],
+      "properties": {
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["PREPARATION", "STROKE", "HOLD", "RETRACTION"]
+          }
+        },
+        "durations_ms": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 },
+          "description": "Duration of each phase in milliseconds"
+        },
+        "total_duration_ms": {
+          "type": "integer",
+          "description": "Total sign duration"
+        }
+      }
+    },
+
+    "Segment": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["M", "D", "T"],
+          "description": "Movement, Detention, or Transition"
+        },
+        "contour": {
+          "type": ["string", "null"],
+          "enum": ["STRAIGHT", "ARC", "CIRCLE", "ZIGZAG", "SEVEN", null]
+        },
+        "local": {
+          "type": ["string", "null"],
+          "enum": ["WIGGLE", "CIRCULAR", "TWIST", "SCRATCH", "NOD", "OSCILLATE", "RELEASE", "FLATTEN", "PROGRESSIVE", "VIBRATE", "RUB", null]
+        },
+        "handshape": { "$ref": "#/$defs/HandshapeSpec" },
+        "location": { "$ref": "#/$defs/LocationSpec" },
+        "orientation": { "$ref": "#/$defs/OrientationSpec" },
+        "duration_ms": { "type": "integer" }
+      }
+    },
+
+    "FlexionLevel": {
+      "type": "string",
+      "enum": ["EXTENDED", "CURVED", "BENT", "CLOSED"],
+      "description": "4-level flexion: EXTENDED=0%, CURVED=33%, BENT=66%, CLOSED=100%"
+    }
+  }
+}

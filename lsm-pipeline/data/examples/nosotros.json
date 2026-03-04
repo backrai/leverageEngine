@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "sign_id": "LSM_NOSOTROS_001",
+    "gloss": "NOSOTROS",
+    "gloss_en": "we",
+    "dialect_region": "NATIONAL",
+    "cruz_aldrete_ref": "Cruz Aldrete 2008, CM#48"
+  },
+  "dominant_hand": {
+    "handshape": {
+      "cm_id": 48,
+      "cruz_aldrete_notation": "12^/o-",
+      "alpha_code": "[N]",
+      "finger_states": {
+        "index": "BENT",
+        "middle": "BENT",
+        "ring": "CLOSED",
+        "pinky": "CLOSED"
+      },
+      "thumb_opposition": "OPPOSED",
+      "thumb_flexion": "CLOSED",
+      "selected_fingers": [1, 2],
+      "spread": "NEUTRAL",
+      "interaction": "NONE",
+      "thumb_contact": false
+    },
+    "location": {
+      "body_anchor": "Pe",
+      "body_region": "TRUNK",
+      "contact": "TOUCHING",
+      "laterality": "CONTRALATERAL",
+      "hand_surface": "FINGERTIPS"
+    },
+    "movement": {
+      "contour": "ARC",
+      "local": null,
+      "direction": [1, 0, 0],
+      "distance": "MEDIUM",
+      "plane": "HORIZONTAL",
+      "dynamics": {
+        "speed": "NORMAL",
+        "tension": "NORMAL",
+        "repeated": false,
+        "contact_quality": "CONTACT"
+      }
+    },
+    "orientation": {
+      "palm_facing": "BACK",
+      "finger_pointing": "DOWN"
+    }
+  },
+  "non_dominant_hand": null,
+  "bimanual": {
+    "type": "ONE_HANDED"
+  },
+  "non_manual": {
+    "eyebrows": "NEUTRAL",
+    "mouth": "NEUTRAL",
+    "head": "NONE",
+    "body_lean": "NONE"
+  },
+  "timing": {
+    "phases": ["PREPARATION", "STROKE", "HOLD", "RETRACTION"],
+    "durations_ms": [160, 380, 100, 210],
+    "total_duration_ms": 850
+  },
+  "segments": [
+    {
+      "type": "D",
+      "handshape": {
+        "cm_id": 48,
+        "finger_states": {"index": "BENT", "middle": "BENT", "ring": "CLOSED", "pinky": "CLOSED"},
+        "thumb_opposition": "OPPOSED",
+        "thumb_flexion": "CLOSED"
+      },
+      "location": {"body_anchor": "Pe", "body_region": "TRUNK", "contact": "TOUCHING", "laterality": "CONTRALATERAL"},
+      "orientation": {"palm_facing": "BACK", "finger_pointing": "DOWN"},
+      "duration_ms": 160
+    },
+    {
+      "type": "M",
+      "contour": "ARC",
+      "location": {"body_anchor": "Pe", "body_region": "TRUNK", "contact": "NEAR"},
+      "duration_ms": 380
+    },
+    {
+      "type": "D",
+      "location": {"body_anchor": "Pe", "body_region": "TRUNK", "contact": "TOUCHING", "laterality": "IPSILATERAL"},
+      "duration_ms": 100
+    }
+  ]
+}

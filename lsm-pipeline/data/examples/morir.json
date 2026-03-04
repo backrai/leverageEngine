@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "sign_id": "LSM_MORIR_001",
+    "gloss": "MORIR",
+    "gloss_en": "to die",
+    "dialect_region": "NATIONAL",
+    "cruz_aldrete_ref": "Cruz Aldrete 2008, CM#20"
+  },
+  "dominant_hand": {
+    "handshape": {
+      "cm_id": 20,
+      "cruz_aldrete_notation": "1234+sep/a+",
+      "alpha_code": "[5]",
+      "finger_states": {
+        "index": "EXTENDED",
+        "middle": "EXTENDED",
+        "ring": "EXTENDED",
+        "pinky": "EXTENDED"
+      },
+      "thumb_opposition": "PARALLEL",
+      "thumb_flexion": "EXTENDED",
+      "selected_fingers": [1, 2, 3, 4],
+      "spread": "SPREAD",
+      "interaction": "SPREAD",
+      "thumb_contact": false
+    },
+    "location": {
+      "body_anchor": "Pe",
+      "body_region": "TRUNK",
+      "contact": "NEAR",
+      "laterality": "MIDLINE",
+      "hand_surface": "PALM"
+    },
+    "movement": {
+      "contour": "SEVEN",
+      "local": null,
+      "direction": [0, -1, 0],
+      "distance": "MEDIUM",
+      "plane": "VERTICAL",
+      "dynamics": {
+        "speed": "FAST",
+        "tension": "TENSE",
+        "repeated": false,
+        "contact_quality": "NONE"
+      }
+    },
+    "orientation": {
+      "palm_facing": "DOWN",
+      "finger_pointing": "FORWARD"
+    }
+  },
+  "non_dominant_hand": null,
+  "bimanual": {
+    "type": "ONE_HANDED"
+  },
+  "non_manual": {
+    "eyebrows": "FURROWED",
+    "mouth": "CLOSED",
+    "head": "TILT_RIGHT",
+    "eye_gaze": "DOWN",
+    "body_lean": "NONE"
+  },
+  "timing": {
+    "phases": ["PREPARATION", "STROKE", "HOLD", "RETRACTION"],
+    "durations_ms": [180, 400, 150, 220],
+    "total_duration_ms": 950
+  },
+  "segments": [
+    {
+      "type": "D",
+      "handshape": {
+        "cm_id": 20,
+        "finger_states": {"index": "EXTENDED", "middle": "EXTENDED", "ring": "EXTENDED", "pinky": "EXTENDED"},
+        "thumb_opposition": "PARALLEL",
+        "thumb_flexion": "EXTENDED"
+      },
+      "location": {"body_anchor": "Pe", "body_region": "TRUNK", "contact": "NEAR"},
+      "orientation": {"palm_facing": "DOWN", "finger_pointing": "FORWARD"},
+      "duration_ms": 180
+    },
+    {
+      "type": "M",
+      "contour": "SEVEN",
+      "location": {"body_anchor": "Pe", "body_region": "TRUNK", "contact": "NEAR"},
+      "duration_ms": 250
+    },
+    {
+      "type": "D",
+      "location": {"body_anchor": "Abd", "body_region": "TRUNK", "contact": "NEAR"},
+      "duration_ms": 50
+    },
+    {
+      "type": "M",
+      "contour": "SEVEN",
+      "location": {"body_anchor": "Abd", "body_region": "TRUNK", "contact": "NEAR"},
+      "duration_ms": 150
+    },
+    {
+      "type": "D",
+      "location": {"body_anchor": "Abd", "body_region": "NEUTRAL_SPACE", "contact": "MEDIAL"},
+      "duration_ms": 150
+    }
+  ]
+}

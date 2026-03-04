@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "sign_id": "LSM_CASA_001",
+    "gloss": "CASA",
+    "gloss_en": "house",
+    "dialect_region": "NATIONAL",
+    "cruz_aldrete_ref": "Cruz Aldrete 2008, §4.2.2"
+  },
+  "dominant_hand": {
+    "handshape": {
+      "cm_id": 2,
+      "cruz_aldrete_notation": "1234+/a^",
+      "alpha_code": "[B]",
+      "finger_states": {
+        "index": "EXTENDED",
+        "middle": "EXTENDED",
+        "ring": "EXTENDED",
+        "pinky": "EXTENDED"
+      },
+      "thumb_opposition": "PARALLEL",
+      "thumb_flexion": "BENT",
+      "selected_fingers": [1, 2, 3, 4],
+      "spread": "NEUTRAL",
+      "interaction": "NONE"
+    },
+    "location": {
+      "body_anchor": "mØPe",
+      "body_region": "NEUTRAL_SPACE",
+      "contact": "MEDIAL",
+      "laterality": "MIDLINE",
+      "hand_surface": "FINGERTIPS",
+      "space_distance": "MEDIAL"
+    },
+    "movement": {
+      "contour": "STRAIGHT",
+      "local": null,
+      "direction": [0, -1, 0],
+      "distance": "SHORT",
+      "dynamics": {
+        "speed": "NORMAL",
+        "contact_quality": "CONTACT"
+      }
+    },
+    "orientation": {
+      "palm_facing": "DOWN",
+      "finger_pointing": "FORWARD"
+    }
+  },
+  "non_dominant_hand": null,
+  "bimanual": {
+    "type": "SYMMETRIC",
+    "weak_hand_role": "MIRROR"
+  },
+  "non_manual": {
+    "eyebrows": "NEUTRAL",
+    "mouth": "NEUTRAL",
+    "head": "NONE"
+  },
+  "timing": {
+    "phases": ["PREPARATION", "STROKE", "HOLD", "RETRACTION"],
+    "durations_ms": [150, 300, 100, 200],
+    "total_duration_ms": 750
+  },
+  "segments": [
+    {
+      "type": "D",
+      "handshape": {
+        "cm_id": 2,
+        "finger_states": {"index": "EXTENDED", "middle": "EXTENDED", "ring": "EXTENDED", "pinky": "EXTENDED"},
+        "thumb_opposition": "PARALLEL",
+        "thumb_flexion": "BENT"
+      },
+      "location": {"body_anchor": "mØPe", "body_region": "NEUTRAL_SPACE", "contact": "MEDIAL"},
+      "duration_ms": 150
+    },
+    {
+      "type": "M",
+      "contour": "STRAIGHT",
+      "location": {"body_anchor": "mØPe", "body_region": "NEUTRAL_SPACE", "contact": "MEDIAL"},
+      "duration_ms": 300
+    },
+    {
+      "type": "D",
+      "location": {"body_anchor": "mØAbd", "body_region": "NEUTRAL_SPACE", "contact": "MEDIAL"},
+      "duration_ms": 100
+    }
+  ]
+}

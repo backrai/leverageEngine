@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "sign_id": "LSM_PESCADO_001",
+    "gloss": "PESCADO",
+    "gloss_en": "fish",
+    "dialect_region": "NATIONAL",
+    "cruz_aldrete_ref": "Cruz Aldrete 2008, CM#1"
+  },
+  "dominant_hand": {
+    "handshape": {
+      "cm_id": 1,
+      "cruz_aldrete_notation": "1234+/a+",
+      "alpha_code": "[B+]",
+      "finger_states": {
+        "index": "EXTENDED",
+        "middle": "EXTENDED",
+        "ring": "EXTENDED",
+        "pinky": "EXTENDED"
+      },
+      "thumb_opposition": "PARALLEL",
+      "thumb_flexion": "EXTENDED",
+      "selected_fingers": [1, 2, 3, 4],
+      "spread": "CLOSED",
+      "interaction": "NONE",
+      "thumb_contact": false
+    },
+    "location": {
+      "body_anchor": "mØPe",
+      "body_region": "NEUTRAL_SPACE",
+      "contact": "MEDIAL",
+      "laterality": "IPSILATERAL",
+      "hand_surface": "RADIAL",
+      "space_distance": "MEDIAL"
+    },
+    "movement": {
+      "contour": "STRAIGHT",
+      "local": "WIGGLE",
+      "direction": [0, 0, 1],
+      "distance": "MEDIUM",
+      "plane": "SAGITTAL",
+      "dynamics": {
+        "speed": "NORMAL",
+        "tension": "RELAXED",
+        "repeated": false,
+        "contact_quality": "NONE"
+      }
+    },
+    "orientation": {
+      "palm_facing": "DOWN",
+      "finger_pointing": "FORWARD"
+    }
+  },
+  "non_dominant_hand": null,
+  "bimanual": {
+    "type": "ONE_HANDED"
+  },
+  "non_manual": {
+    "eyebrows": "NEUTRAL",
+    "mouth": "NEUTRAL",
+    "head": "NONE"
+  },
+  "timing": {
+    "phases": ["PREPARATION", "STROKE", "HOLD", "RETRACTION"],
+    "durations_ms": [140, 450, 60, 200],
+    "total_duration_ms": 850
+  },
+  "segments": [
+    {
+      "type": "D",
+      "handshape": {
+        "cm_id": 1,
+        "finger_states": {"index": "EXTENDED", "middle": "EXTENDED", "ring": "EXTENDED", "pinky": "EXTENDED"},
+        "thumb_opposition": "PARALLEL",
+        "thumb_flexion": "EXTENDED"
+      },
+      "location": {"body_anchor": "mØPe", "body_region": "NEUTRAL_SPACE", "contact": "MEDIAL"},
+      "orientation": {"palm_facing": "DOWN", "finger_pointing": "FORWARD"},
+      "duration_ms": 140
+    },
+    {
+      "type": "M",
+      "contour": "STRAIGHT",
+      "local": "WIGGLE",
+      "location": {"body_anchor": "mØPe", "body_region": "NEUTRAL_SPACE", "contact": "MEDIAL"},
+      "duration_ms": 450
+    },
+    {
+      "type": "D",
+      "location": {"body_anchor": "mØPe", "body_region": "NEUTRAL_SPACE", "contact": "DISTANT"},
+      "duration_ms": 60
+    }
+  ]
+}

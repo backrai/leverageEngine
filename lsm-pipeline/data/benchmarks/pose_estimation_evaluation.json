@@ -1,0 +1,153 @@
+{
+  "task_id": "1.4.1",
+  "title": "Pose Estimation Stack Evaluation",
+  "date": "2026-03-04",
+  "status": "RECOMMENDATION_READY",
+  "recommendation": "MediaPipe Holistic Landmarker (MediaPipe Tasks API)",
+  "evaluation_criteria": {
+    "hand_keypoint_accuracy": {"weight": 0.35, "description": "Critical for CM classification"},
+    "face_landmark_quality": {"weight": 0.20, "description": "Needed for NMF (Non-Manual Features)"},
+    "body_pose_accuracy": {"weight": 0.15, "description": "Needed for UB classification"},
+    "inference_speed": {"weight": 0.15, "description": "Target: real-time on iPad"},
+    "model_size_deployability": {"weight": 0.10, "description": "CoreML/Metal compatibility"},
+    "license": {"weight": 0.05, "description": "Commercial use permitted"}
+  },
+  "candidates": [
+    {
+      "name": "MediaPipe Holistic Landmarker",
+      "version": "MediaPipe Tasks API (2025)",
+      "body_keypoints": 33,
+      "hand_keypoints_per_hand": 21,
+      "face_keypoints": 478,
+      "total_keypoints": 553,
+      "fps_ipad": "25-30",
+      "fps_gpu": "30-60+",
+      "model_size_mb": "15-20",
+      "ios_sdk": "Official (CocoaPods, SPM)",
+      "coreml_support": true,
+      "license": "Apache-2.0",
+      "hand_accuracy_notes": "~80-90% for complex sign language handshapes. Struggles with self-occlusion.",
+      "face_detail": "BEST — 478 points, dense mesh for eyebrows, mouth, eye gaze",
+      "slr_community": "Dominant — de facto standard in sign language recognition research",
+      "weighted_score": 0.87,
+      "verdict": "SELECTED — Primary model"
+    },
+    {
+      "name": "DWPose (RTMPose-l)",
+      "version": "2024",
+      "body_keypoints": 23,
+      "hand_keypoints_per_hand": 21,
+      "face_keypoints": 68,
+      "total_keypoints": 133,
+      "fps_ipad": "10-20 (estimated)",
+      "fps_gpu": "30-50",
+      "model_size_mb": "120-200",
+      "ios_sdk": "None",
+      "coreml_support": false,
+      "license": "Apache-2.0",
+      "hand_accuracy_notes": "Higher than MediaPipe on COCO-WholeBody (AP 52-56 vs ~45-50)",
+      "face_detail": "POOR — only 68 sparse landmarks, insufficient for NMF",
+      "slr_community": "Low adoption",
+      "weighted_score": 0.62,
+      "verdict": "CANDIDATE — Server-side refinement for difficult CMs"
+    },
+    {
+      "name": "RTMPose WholeBody",
+      "version": "2024",
+      "body_keypoints": 23,
+      "hand_keypoints_per_hand": 21,
+      "face_keypoints": 68,
+      "total_keypoints": 133,
+      "fps_ipad": "15-25 (estimated)",
+      "fps_gpu": "30-60",
+      "model_size_mb": "30-120",
+      "ios_sdk": "None (ONNX export available)",
+      "coreml_support": false,
+      "license": "Apache-2.0",
+      "hand_accuracy_notes": "Competitive with DWPose (AP 50-54)",
+      "face_detail": "POOR — 68 sparse landmarks",
+      "slr_community": "Emerging",
+      "weighted_score": 0.58,
+      "verdict": "WATCH — Future alternative if iOS deployment materializes"
+    },
+    {
+      "name": "ViTPose++ WholeBody",
+      "version": "2024-2025",
+      "body_keypoints": 23,
+      "hand_keypoints_per_hand": 21,
+      "face_keypoints": 68,
+      "total_keypoints": 133,
+      "fps_ipad": "5-15 (estimated)",
+      "fps_gpu": "8-30",
+      "model_size_mb": "50-600",
+      "ios_sdk": "None",
+      "coreml_support": false,
+      "license": "Apache-2.0",
+      "hand_accuracy_notes": "Highest 2D accuracy (AP 57-60 hands) but impractical for mobile",
+      "face_detail": "POOR — 68 sparse landmarks",
+      "slr_community": "Emerging",
+      "weighted_score": 0.48,
+      "verdict": "NOT SELECTED — Too large for mobile, poor face detail"
+    },
+    {
+      "name": "SMPLer-X",
+      "version": "2024",
+      "body_keypoints": "22 joints + 10475 mesh vertices",
+      "hand_keypoints_per_hand": "15 joints + mesh",
+      "face_keypoints": "68 + 5023 mesh vertices + 10 expression params",
+      "total_keypoints": "55 joints + full mesh",
+      "fps_ipad": "N/A — impossible",
+      "fps_gpu": "2-5",
+      "model_size_mb": "2000-3000",
+      "ios_sdk": "None",
+      "coreml_support": false,
+      "license": "Academic (SMPL-X license required)",
+      "hand_accuracy_notes": "Richest representation — full 3D mesh captures spread, contact, flexion geometrically",
+      "face_detail": "BEST — dense mesh + expression parameters",
+      "slr_community": "Very low — used for ground-truth generation",
+      "weighted_score": 0.35,
+      "verdict": "NOT SELECTED — Offline ground-truth annotation tool only"
+    }
+  ],
+  "architecture_recommendation": {
+    "primary_realtime": {
+      "model": "MediaPipe Holistic Landmarker",
+      "role": "On-device real-time pose estimation for iPad annotation tool",
+      "deployment": "MediaPipe Tasks iOS SDK with GPU/CoreML delegate",
+      "justification": [
+        "Only production-ready iOS option with official SDK",
+        "478 face landmarks critical for NonManualSpec (eyebrows, mouth, head tilt)",
+        "33 body landmarks for 76-tabula LocationSpec anchor classification",
+        "21 hand landmarks provide MCP/PIP/DIP/TIP for FlexionLevel computation",
+        "15-20 MB total model — feasible for app bundle",
+        "25-30 fps on iPad — sufficient for PSHR phase capture",
+        "Dominant in SLR research — easier to benchmark and compare",
+        "Apache 2.0 — no license complications"
+      ]
+    },
+    "secondary_server": {
+      "model": "DWPose or RTMPose WholeBody",
+      "role": "Server-side refinement for difficult CMs when MediaPipe confidence is low",
+      "when": "Phase 2 — when recorded video annotation pipeline is built"
+    },
+    "ground_truth": {
+      "model": "SMPLer-X",
+      "role": "Offline 3D mesh annotation for training data quality assurance",
+      "when": "Phase 2 — for building ML training datasets"
+    }
+  },
+  "known_gaps": [
+    "Hand accuracy degrades under self-occlusion (fingers overlapping) — mitigate with temporal smoothing",
+    "Finger contact/spread not directly available from 21 keypoints — use geometric heuristics (implemented in hand_features.py)",
+    "Thumb opposition requires palm plane estimation — implemented via cross-product method",
+    "Some Cruz Aldrete CMs with subtle distinctions (e.g., CM#22 '\"' vs CM#23 '°') may be hard to differentiate from keypoints alone"
+  ],
+  "implementation_status": {
+    "keypoint_schema": "DONE — src/perception/keypoint_schema.py",
+    "mediapipe_extractor": "DONE — src/perception/mediapipe_extractor.py",
+    "hand_feature_extraction": "DONE — src/perception/hand_features.py (flexion→FlexionLevel, thumb opposition, spread, contact)",
+    "cm_matching": "DONE — match_cm() in hand_features.py (matches against all 101 CMs)",
+    "benchmark_script": "DONE — scripts/benchmark_pose.py (synthetic demo verified)",
+    "video_benchmark": "PENDING — needs LSM video test data"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "task_id": "1.3.4",
+  "title": "LSM Video Source Inventory",
+  "date": "2026-03-04",
+  "total_sources_cataloged": 12,
+  "key_finding": "No large-scale, publicly available, ML-ready LSM video dataset exists. This is both the challenge and opportunity for the lsm-pipeline project.",
+  "sources": [
+    {
+      "name": "DIELSEME",
+      "full_name": "Diccionario de la Lengua de Señas Mexicana",
+      "url": "https://dielseme.conadis.gob.mx",
+      "publisher": "CONADIS (Mexican federal government)",
+      "type": "dictionary",
+      "estimated_signs": "800-1200",
+      "video_quality": "480-720p, frontal, neutral background, studio lighting",
+      "licensing": "Government publication — requires formal permission from CONADIS",
+      "ml_suitability": "MODERATE-HIGH",
+      "priority": 1,
+      "notes": "Uses same Cruz Aldrete framework as lsm-pipeline. Isolated signs, consistent framing.",
+      "needs_verification": ["exact URL", "current sign count", "terms of use"]
+    },
+    {
+      "name": "Spread the Sign (LSM)",
+      "full_name": "Spread the Sign — Lengua de Señas Mexicana",
+      "url": "https://www.spreadthesign.com/es.mx/search/",
+      "publisher": "European Sign Language Centre (Sweden)",
+      "type": "dictionary",
+      "estimated_signs": "2000-5000+",
+      "video_quality": "720p, standardized neutral background, frontal waist-up",
+      "licensing": "Freely viewable. Prohibits downloading/redistribution without permission",
+      "ml_suitability": "HIGH (if licensable)",
+      "priority": 1,
+      "notes": "Best standardized quality. 40+ sign languages. Consistent format enables cross-lingual research.",
+      "needs_verification": ["exact LSM sign count", "current ToS", "licensing contact"]
+    },
+    {
+      "name": "Manos con Voz",
+      "url": "https://www.manosconvoz.com",
+      "publisher": "Private NGO/social enterprise",
+      "type": "educational",
+      "estimated_signs": "200-500",
+      "video_quality": "720-1080p, light/green-screen background",
+      "licensing": "Proprietary. Requires licensing agreement",
+      "ml_suitability": "LOW-MODERATE",
+      "priority": 3,
+      "notes": "Designed for human learners. Includes transitions/overlays requiring heavy preprocessing."
+    },
+    {
+      "name": "CONADIS LSM Portal",
+      "url": "https://www.gob.mx/conadis/acciones-y-programas/lengua-de-senas-mexicana-lsm",
+      "publisher": "CONADIS (federal)",
+      "type": "government",
+      "estimated_signs": "50-100 (beyond DIELSEME)",
+      "video_quality": "Variable",
+      "licensing": "Government open-access, no explicit ML license",
+      "ml_suitability": "LOW",
+      "priority": 4,
+      "notes": "Supplementary awareness material, not structured sign data."
+    },
+    {
+      "name": "YouTube LSM Channels",
+      "channels": ["Señas en Señas", "Dilo en Señas", "La Comunidad Sorda", "CONALEP LSM"],
+      "publisher": "Various creators",
+      "type": "educational",
+      "estimated_signs": "1000+ total across channels",
+      "video_quality": "Highly variable (480p-1080p)",
+      "licensing": "YouTube ToS prohibits scraping. NOT suitable without creator partnership",
+      "ml_suitability": "LOW",
+      "priority": 5,
+      "notes": "Inconsistent quality. Requires individual creator partnerships."
+    },
+    {
+      "name": "CINVESTAV LSM datasets",
+      "publisher": "CINVESTAV (Guadalajara & Mexico City)",
+      "type": "academic",
+      "estimated_signs": "20-50 per dataset",
+      "video_quality": "Lab-controlled (640×480 to 1280×720, solid background)",
+      "licensing": "Academic use — request to research group",
+      "ml_suitability": "MODERATE",
+      "priority": 2,
+      "notes": "Small but controlled. May include Kinect depth data. Contact research groups directly."
+    },
+    {
+      "name": "UNAM IIMAS datasets",
+      "publisher": "UNAM-IIMAS",
+      "type": "academic",
+      "estimated_signs": "20-50 per dataset",
+      "video_quality": "Lab-controlled",
+      "licensing": "Academic request",
+      "ml_suitability": "MODERATE",
+      "priority": 2,
+      "notes": "Internal thesis datasets. Not publicly available on standard ML repositories."
+    },
+    {
+      "name": "IPN CIC datasets",
+      "publisher": "IPN Centro de Investigación en Computación",
+      "type": "academic",
+      "estimated_signs": "20-50",
+      "video_quality": "Lab-controlled. Some Kinect/Leap Motion data",
+      "licensing": "Academic request",
+      "ml_suitability": "MODERATE",
+      "priority": 2,
+      "notes": "Sensor-based data could complement MediaPipe keypoint extraction."
+    }
+  ],
+  "reference_datasets_methodology": [
+    {
+      "name": "WLASL",
+      "language": "ASL",
+      "size": "2000 glosses, ~21000 clips",
+      "methodology": "Curated from online dictionaries — directly applicable to LSM approach",
+      "license": "Research use",
+      "relevance": "HIGH — annotation format (gloss + bbox + signer ID) is reference model"
+    },
+    {
+      "name": "MS-ASL",
+      "language": "ASL",
+      "size": "1000 signs, ~25000 clips, 222 signers",
+      "methodology": "URL-list distribution (metadata only, no raw video) — sidesteps copyright",
+      "license": "Research use",
+      "relevance": "HIGH — distribution model directly applicable"
+    },
+    {
+      "name": "How2Sign",
+      "language": "ASL",
+      "size": "~35 hours, 16000 sentences",
+      "methodology": "1080p multi-view studio capture, MediaPipe keypoints included",
+      "license": "CC BY-NC-SA 4.0",
+      "relevance": "VERY HIGH — gold standard for continuous SL, uses MediaPipe"
+    },
+    {
+      "name": "PHOENIX-2014-T",
+      "language": "DGS (German)",
+      "size": "~8000 sentences, ~1000 signs",
+      "methodology": "Sourced from broadcast TV weather segments",
+      "license": "Research use",
+      "relevance": "MODERATE — continuous SLR benchmark"
+    }
+  ],
+  "gap_analysis": {
+    "underrepresented_cm_categories": "CMs #88-101 (rare configurations, proper names) likely have zero video representation",
+    "underrepresented_locations": "Rare body locations (e.g., 'Par' parietal, 'Je' liver) may have very few examples",
+    "underrepresented_movements": "Complex movements (SEVEN, ZIGZAG) are less common than STRAIGHT/ARC",
+    "signer_diversity": "Most sources use 1-3 signers — insufficient for signer-independent models",
+    "regional_variants": "Almost all sources are CDMX/national — GDL, MTY, TIJ variants underrepresented"
+  },
+  "recommendations": [
+    "Priority 1: License DIELSEME and Spread the Sign LSM sections for ML use",
+    "Priority 2: Contact CINVESTAV, UNAM-IIMAS, IPN-CIC for academic dataset sharing",
+    "Priority 3: Adopt MS-ASL's URL-list distribution model for copyright compliance",
+    "Key differentiator: LSM-PN phonological annotation (101 CMs, 76 locations, movements) goes far beyond gloss-only datasets"
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "sign_id": "LSM_GRACIAS_001",
+    "gloss": "GRACIAS",
+    "gloss_en": "thank you",
+    "dialect_region": "NATIONAL",
+    "cruz_aldrete_ref": "Cruz Aldrete 2008, CM#86"
+  },
+  "dominant_hand": {
+    "handshape": {
+      "cm_id": 86,
+      "cruz_aldrete_notation": "2^°NSAb-/a+",
+      "alpha_code": null,
+      "finger_states": {
+        "index": "EXTENDED",
+        "middle": "CURVED",
+        "ring": "CLOSED",
+        "pinky": "CLOSED"
+      },
+      "thumb_opposition": "PARALLEL",
+      "thumb_flexion": "EXTENDED",
+      "selected_fingers": [1, 2],
+      "spread": "NEUTRAL",
+      "interaction": "NONE",
+      "thumb_contact": false,
+      "non_selected_above": true
+    },
+    "location": {
+      "body_anchor": "Fr",
+      "body_region": "HEAD",
+      "contact": "TOUCHING",
+      "laterality": "MIDLINE",
+      "hand_surface": "FINGERTIPS"
+    },
+    "movement": {
+      "contour": "STRAIGHT",
+      "local": null,
+      "direction": [0, -1, 0.3],
+      "distance": "SHORT",
+      "plane": "VERTICAL",
+      "dynamics": {
+        "speed": "NORMAL",
+        "tension": "NORMAL",
+        "repeated": false,
+        "contact_quality": "CONTACT"
+      }
+    },
+    "orientation": {
+      "palm_facing": "BACK",
+      "finger_pointing": "UP"
+    }
+  },
+  "non_dominant_hand": null,
+  "bimanual": {
+    "type": "ONE_HANDED"
+  },
+  "non_manual": {
+    "eyebrows": "NEUTRAL",
+    "mouth": "NEUTRAL",
+    "head": "NOD"
+  },
+  "timing": {
+    "phases": ["PREPARATION", "STROKE", "HOLD", "RETRACTION"],
+    "durations_ms": [150, 300, 100, 200],
+    "total_duration_ms": 750
+  },
+  "segments": [
+    {
+      "type": "D",
+      "handshape": {
+        "cm_id": 86,
+        "finger_states": {"index": "EXTENDED", "middle": "CURVED", "ring": "CLOSED", "pinky": "CLOSED"},
+        "thumb_opposition": "PARALLEL",
+        "thumb_flexion": "EXTENDED"
+      },
+      "location": {"body_anchor": "Fr", "body_region": "HEAD", "contact": "TOUCHING"},
+      "orientation": {"palm_facing": "BACK", "finger_pointing": "UP"},
+      "duration_ms": 150
+    },
+    {
+      "type": "M",
+      "contour": "STRAIGHT",
+      "location": {"body_anchor": "Fr", "body_region": "HEAD", "contact": "TOUCHING"},
+      "duration_ms": 300
+    },
+    {
+      "type": "D",
+      "location": {"body_anchor": "Me", "body_region": "FACE", "contact": "NEAR"},
+      "duration_ms": 100
+    }
+  ]
+}

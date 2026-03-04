@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "sign_id": "LSM_CONTENTO_001",
+    "gloss": "CONTENTO",
+    "gloss_en": "happy",
+    "dialect_region": "NATIONAL",
+    "cruz_aldrete_ref": "Cruz Aldrete 2008, CM#26"
+  },
+  "dominant_hand": {
+    "handshape": {
+      "cm_id": 26,
+      "cruz_aldrete_notation": "1234+°sep/o°",
+      "alpha_code": "[5°]",
+      "finger_states": {
+        "index": "CURVED",
+        "middle": "CURVED",
+        "ring": "CURVED",
+        "pinky": "CURVED"
+      },
+      "thumb_opposition": "OPPOSED",
+      "thumb_flexion": "CURVED",
+      "selected_fingers": [1, 2, 3, 4],
+      "spread": "SPREAD",
+      "interaction": "SPREAD",
+      "thumb_contact": false
+    },
+    "location": {
+      "body_anchor": "Pe",
+      "body_region": "TRUNK",
+      "contact": "TOUCHING",
+      "laterality": "MIDLINE",
+      "hand_surface": "PALM"
+    },
+    "movement": {
+      "contour": "CIRCLE",
+      "local": null,
+      "direction": [0, 1, 0],
+      "distance": "MEDIUM",
+      "plane": "VERTICAL",
+      "dynamics": {
+        "speed": "NORMAL",
+        "tension": "RELAXED",
+        "repeated": true,
+        "contact_quality": "BRUSHING"
+      }
+    },
+    "orientation": {
+      "palm_facing": "BACK",
+      "finger_pointing": "UP"
+    }
+  },
+  "non_dominant_hand": null,
+  "bimanual": {
+    "type": "ONE_HANDED"
+  },
+  "non_manual": {
+    "eyebrows": "RAISED",
+    "mouth": "STRETCHED",
+    "head": "NONE",
+    "body_lean": "NONE"
+  },
+  "timing": {
+    "phases": ["PREPARATION", "STROKE", "HOLD", "RETRACTION"],
+    "durations_ms": [150, 450, 100, 200],
+    "total_duration_ms": 900
+  },
+  "segments": [
+    {
+      "type": "D",
+      "handshape": {
+        "cm_id": 26,
+        "finger_states": {"index": "CURVED", "middle": "CURVED", "ring": "CURVED", "pinky": "CURVED"},
+        "thumb_opposition": "OPPOSED",
+        "thumb_flexion": "CURVED"
+      },
+      "location": {"body_anchor": "Pe", "body_region": "TRUNK", "contact": "TOUCHING"},
+      "orientation": {"palm_facing": "BACK", "finger_pointing": "UP"},
+      "duration_ms": 150
+    },
+    {
+      "type": "M",
+      "contour": "CIRCLE",
+      "location": {"body_anchor": "Pe", "body_region": "TRUNK", "contact": "TOUCHING"},
+      "duration_ms": 450
+    },
+    {
+      "type": "D",
+      "location": {"body_anchor": "Pe", "body_region": "TRUNK", "contact": "TOUCHING"},
+      "duration_ms": 100
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "backrai-dashboard",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "dashboard", "run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "backrai-extension",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "extension", "run", "dev"],
+      "port": 1012
+    },
+    {
+      "name": "lsm-recorder",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "../lsm-recorder", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}

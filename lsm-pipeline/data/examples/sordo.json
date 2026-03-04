@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "sign_id": "LSM_SORDO_001",
+    "gloss": "SORDO",
+    "gloss_en": "deaf",
+    "dialect_region": "NATIONAL",
+    "cruz_aldrete_ref": "Cruz Aldrete 2008, CM#55"
+  },
+  "dominant_hand": {
+    "handshape": {
+      "cm_id": 55,
+      "cruz_aldrete_notation": "1+/o-",
+      "alpha_code": "[1]",
+      "finger_states": {
+        "index": "EXTENDED",
+        "middle": "CLOSED",
+        "ring": "CLOSED",
+        "pinky": "CLOSED"
+      },
+      "thumb_opposition": "OPPOSED",
+      "thumb_flexion": "CLOSED",
+      "selected_fingers": [1],
+      "spread": "NEUTRAL",
+      "interaction": "NONE",
+      "thumb_contact": false
+    },
+    "location": {
+      "body_anchor": "Au",
+      "body_region": "HEAD",
+      "contact": "TOUCHING",
+      "laterality": "IPSILATERAL",
+      "hand_surface": "FINGERTIPS"
+    },
+    "movement": {
+      "contour": "STRAIGHT",
+      "local": null,
+      "direction": [0, -0.3, 0],
+      "distance": "SHORT",
+      "plane": "SAGITTAL",
+      "dynamics": {
+        "speed": "NORMAL",
+        "tension": "NORMAL",
+        "repeated": false,
+        "contact_quality": "CONTACT"
+      }
+    },
+    "orientation": {
+      "palm_facing": "BACK",
+      "finger_pointing": "UP"
+    }
+  },
+  "non_dominant_hand": null,
+  "bimanual": {
+    "type": "ONE_HANDED"
+  },
+  "non_manual": {
+    "eyebrows": "NEUTRAL",
+    "mouth": "CLOSED",
+    "head": "NONE"
+  },
+  "timing": {
+    "phases": ["PREPARATION", "STROKE", "HOLD", "RETRACTION"],
+    "durations_ms": [120, 350, 80, 200],
+    "total_duration_ms": 750
+  },
+  "segments": [
+    {
+      "type": "D",
+      "handshape": {
+        "cm_id": 55,
+        "finger_states": {"index": "EXTENDED", "middle": "CLOSED", "ring": "CLOSED", "pinky": "CLOSED"},
+        "thumb_opposition": "OPPOSED",
+        "thumb_flexion": "CLOSED"
+      },
+      "location": {"body_anchor": "Au", "body_region": "HEAD", "contact": "TOUCHING"},
+      "orientation": {"palm_facing": "BACK", "finger_pointing": "UP"},
+      "duration_ms": 120
+    },
+    {
+      "type": "M",
+      "contour": "STRAIGHT",
+      "location": {"body_anchor": "Au", "body_region": "HEAD", "contact": "TOUCHING"},
+      "duration_ms": 350
+    },
+    {
+      "type": "D",
+      "location": {"body_anchor": "Os", "body_region": "FACE", "contact": "TOUCHING"},
+      "duration_ms": 80
+    }
+  ]
+}
